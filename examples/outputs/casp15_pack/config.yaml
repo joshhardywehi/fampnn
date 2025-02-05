@@ -1,0 +1,25 @@
+batch_size: 16
+checkpoint_path: weights/fampnn_0_0.ckpt
+compile_model: true
+fixed_pos_csv: examples/fixed_pos_csvs/casp15_pack.csv
+fixed_pos_verbose: true
+num_samples_per_pdb: 1
+num_workers: 8
+out_dir: examples/outputs/casp15_pack
+pdb_dir: data/casp15/pdbs
+pdb_key_list: examples/pdb_key_lists/casp15.txt
+scn_diffusion:
+  churn_cfg:
+    num_steps: 50
+    s_churn: 0
+    s_noise: 1.0
+    s_t_max: 50.0
+    s_t_min: 0.01
+  num_steps: 50
+  step_scale: 1.5
+  timestep_schedule:
+    mode: linear
+    num_steps: 50
+    t_end: 1.0
+    t_start: 0.0
+seed: 0
