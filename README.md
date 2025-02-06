@@ -1,6 +1,8 @@
 # Full-atom MPNN
 Official repository for Full-atom MPNN (FAMPNN), a sequence design method that explicitly models both sequence identity and sidechain conformation.
 
+![Sequence design trajectory](assets/seq_des_traj.gif)
+
 This repository contains code for all-atom sequence design, sidechain packing, and mutation scoring.
 
 # Installation
@@ -48,6 +50,8 @@ For example, the row above specifies that sequence design should condition on th
 To pack sidechains onto a given backbone, use `fampnn/inference/pack.py`.
 
 This script takes in a `pdb_dir` with PDB files (and optionally a `pdb_key_list` to subset to certain PDBs) and will pack sidechains onto the given backbones. By default, if `fixed_pos_csv` is not provided, the script will perform sidechain packing assuming full sequence context but no sidechain context. If fixed sequence positions are specified, the model will only pack those provided positions. An example of sidechain packing with fixed positions is provided in `examples/scripts/pack.sh`.
+
+![Sidechain packing trajectory](assets/pack_traj.gif)
 
 ## Mutation scoring
 To score specific mutations for a given PDB, use `fampnn/inference/score_multi.py`.
