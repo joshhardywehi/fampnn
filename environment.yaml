@@ -23,6 +23,7 @@ dependencies:
   - rdkit
   - polars
   - pip
+  - einops
   - pip:
     - hydra-core
     - torchtyping
@@ -35,3 +36,4 @@ dependencies:
     - loguru
     - pdbeccdutils
     - fair-esm
+    - joblib
