@@ -1,12 +1,12 @@
 # Full-atom MPNN
 Official repository for Full-atom MPNN (FAMPNN), a sequence design method that explicitly models both sequence identity and sidechain conformation.
 
-This repository contains code for all-atom sequence design, sidechain packing, and mutation scoring.
+This repository contains code for full-atom sequence design, sidechain packing, and mutation scoring.
 
 <img src="assets/seq_des_traj.gif" alt="Sequence design trajectory" width="900"/>
 
 # Installation
-To run the scripts in this repository, we recommend using a conda environment:
+To run the scripts in this repository, we recommend using a conda environment. First, clone this repository and navigate to the root directory. Then run the following commands:
 ```
 conda create -n fampnn python=3.10
 conda activate fampnn
