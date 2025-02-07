@@ -1,9 +1,6 @@
 #!/bin/bash
 # Example script for scoring specific mutations for a given PDB
 # Usage: bash examples/scripts/score_multi.sh
-
-conda activate fampnn
-
 python3 fampnn/inference/score_multi.py \
         checkpoint_path=weights/fampnn_0_3_cath.pt \
         pdb_path=data/pdbs/3e1r.pdb \

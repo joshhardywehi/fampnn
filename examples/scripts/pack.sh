@@ -1,9 +1,6 @@
 #!/bin/bash
 # Example script for sidechain packing on CASP15 targets
 # Usage: bash examples/scripts/pack.sh
-
-conda activate fampnn
-
 python3 fampnn/inference/pack.py \
         checkpoint_path=weights/fampnn_0_0.pt \
         pdb_dir=data/casp15/pdbs \

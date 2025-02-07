@@ -1,9 +1,6 @@
 #!/bin/bash
 # Example script for unconditional sequence design on RFdiffusion de novo backbones
 # Usage: bash examples/scripts/seq_design_unconditional.sh
-
-conda activate fampnn
-
 python3 fampnn/inference/seq_design.py \
         checkpoint_path=weights/fampnn_0_3.pt \
         pdb_dir=data/denovo500/pdbs \

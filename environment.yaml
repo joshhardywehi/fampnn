@@ -23,6 +23,7 @@ dependencies:
   - pip:
     - hydra-core
     - torchtyping
+    - dm-tree
     - timm
     - jaxtyping
     - joblib

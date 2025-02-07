@@ -1,9 +1,6 @@
 #!/bin/bash
 # Example script for conditional sequence design on CASP15 targets
 # Usage: bash examples/scripts/seq_design_conditional.sh
-
-conda activate fampnn
-
 python3 fampnn/inference/seq_design.py \
         checkpoint_path=weights/fampnn_0_3.pt \
         pdb_dir=data/casp15/pdbs \
