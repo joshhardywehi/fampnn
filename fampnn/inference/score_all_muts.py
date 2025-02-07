@@ -30,7 +30,7 @@ def main(cfg: DictConfig):
 
     # Load in sequence denoiser (in eval mode)
     torch.set_grad_enabled(False)
-    ckpt = torch.load(cfg.checkpoint_path)
+    ckpt = torch.load(cfg.checkpoint_path, map_location=device)
     model = SeqDenoiser(ckpt["model_cfg"]).to(device).eval()
     model.load_state_dict(ckpt["state_dict"])
 
