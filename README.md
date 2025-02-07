@@ -6,15 +6,16 @@ This repository contains code for full-atom sequence design, sidechain packing, 
 <img src="assets/seq_des_traj.gif" alt="Sequence design trajectory" width="900"/>
 
 # Installation
-To run the scripts in this repository, we recommend using a conda environment. First, clone this repository and navigate to the root directory. Then run the following commands:
+To run the scripts in this repository, we recommend using a conda environment. First, clone this repository, navigate to the root directory, and run:
 ```
 conda create -n fampnn python=3.10
 conda activate fampnn
+```
+Next, to install PyTorch with GPU support, follow instructions from https://pytorch.org/get-started/locally/ for your system and CUDA version. We used PyTorch 2.4.1 with CUDA 12.1 for our experiments. Finally, run:
+```
 conda env update --file environment.yaml
 pip install -e .
 ```
-
-Then, to install pytorch with GPU support, follow instructions from https://pytorch.org/get-started/locally/ for your system and CUDA version. We used PyTorch 2.4.1 with CUDA 12.1 for our experiments.
 
 ## Model weights
 We provide the following weights under `weights/` for FAMPNN:
