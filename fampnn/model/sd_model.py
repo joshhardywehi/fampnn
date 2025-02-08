@@ -133,7 +133,7 @@ class SeqDenoiser(nn.Module):
         psce_t = torch.zeros((B, N, len(rc.non_bb_idxs)), device=x.device)
 
         # Run sequence denoiser to get packed sidechains
-        x1_pred, _, aux_preds = denoiser_fn(xt, aatype_t, t=None, scn_mlm_mask=scn_mlm_mask)
+        x1_pred, _, aux_preds = denoiser_fn(xt, aatype_t, scn_mlm_mask=scn_mlm_mask)
 
         # Unmask sidechains and sidechain confidence to match seq_mlm_mask
         xt = sampling_utils.unmask(xt, x1_pred, scn_mlm_mask, seq_mlm_mask)
@@ -239,7 +239,7 @@ class SeqDenoiser(nn.Module):
             K_next = timesteps_K[:, i + 1]
 
             # Run sequence denoiser
-            x1_pred, aatype_pred, aux_preds = denoiser_fn(xt, aatype_t, t=None, scn_mlm_mask=scn_mlm_mask)
+            x1_pred, aatype_pred, aux_preds = denoiser_fn(xt, aatype_t, scn_mlm_mask=scn_mlm_mask)
 
             # Update masks
             seq_mlm_mask_prev, scn_mlm_mask_prev = seq_mlm_mask.clone(), scn_mlm_mask.clone()

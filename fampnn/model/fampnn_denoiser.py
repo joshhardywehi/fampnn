@@ -30,7 +30,6 @@ class FAMPNNDenoiser(nn.Module):
     def forward(self,
                 x_noised: TensorType["b n a 3", float],
                 aatype_noised: TensorType["b n", int],
-                t: TensorType["b", float],  # possibly a tuple (t_seq, t_scn)
                 residue_index: TensorType["b n", int],
                 chain_encoding: TensorType["b n", int],
                 seq_mask: TensorType["b n", float],
