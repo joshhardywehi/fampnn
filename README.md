@@ -55,9 +55,19 @@ This script takes in a `pdb_dir` with PDB files (and optionally a `pdb_key_list`
 <img src="assets/pack_traj.gif" alt="Sidechain packing trajectory" width="900"/>
 
 ## Mutation scoring
-To score specific mutations for a given PDB, use `fampnn/inference/score_multi.py`.
 
-This script requires a `mutations_path` to a 1-column CSV file with the mutations to score. An example of mutation scoring is provided in `examples/scripts/score_multi.sh`.
+We provide two scripts for scoring mutations for a given PDB. 
 
-To score all possible mutations for a given PDB, use `fampnn/inference/score_all_muts.py`. This script will output a CSV with each position mutated to all 19 other amino acids, along with the predicted score for each mutation. An example of scoring all mutations is provided in `examples/scripts/score_all_muts.sh`.
+### Score every possible single-mutant
 
+To score all possible single mutations for a given PDB, use `fampnn/inference/score_all_muts.py`. This script will iterate over each position in the PDB, and score the fitness of all possible mutations normalized by the likelihood of the wild-type amino acid. An example of how to run this script is provided in `examples/scripts/score_all_muts.sh`. The script will output a CSV in the directory specified by the `out_dir` argument with the score for each possible mutation.
+
+### Score a given list of mutations
+
+To score specific mutations for a given PDB, use `fampnn/inference/score_multi.py`. This script requires a 1-column CSV file with the mutations to score, specified by the `mutations_path` argument. A mutation is specified as follows:
+
+<Wild-type 1-letter amino acid code><0-index'd position in the PDB file><Mutant 1-letter amino acid code>
+
+To evaluate multiple simultaneous mutations (eg. double and triple mutations), simply concatenate the single-mutations with colons `:`. For example, simultaneous mutations of Asparagine (N) in the first and second positons of a PDB to Proline (P) and Arginine (R) respectively, would be `N0P:N1R	`
+
+An example of running a this script is provided in `examples/scripts/score_multi.sh`, and an example of an input csv for this script is provided in `fampnn/examples/scoring/mutations.csv`.
