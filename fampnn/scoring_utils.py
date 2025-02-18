@@ -147,7 +147,6 @@ def apply_multi_muts(model: SeqDenoiser,
                                            missing_atom_mask=missing_atom_mask,
                                            scn_mlm_mask = aux_inputs['scn_mlm_mask'],
                                            aux_inputs=aux_inputs,
-                                           t=torch.ones_like(seq_mask),
                                            is_sampling=True
                                            )
 
