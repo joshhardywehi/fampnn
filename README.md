@@ -1,5 +1,6 @@
 # Full-atom MPNN
-Official repository for Full-atom MPNN (FAMPNN), a sequence design method that explicitly models both sequence identity and sidechain conformation.
+Official repository for Full-atom MPNN (FAMPNN), a sequence design method that explicitly models both sequence identity and sidechain conformation. For more details, see our preprint: [Sidechain conditioning and modeling for full-atom protein sequence design with FAMPNN](https://www.biorxiv.org/content/10.1101/2025.02.13.637498v1)
+
 
 This repository contains code for full-atom sequence design, sidechain packing, and mutation scoring.
 
@@ -56,7 +57,7 @@ This script takes in a `pdb_dir` with PDB files (and optionally a `pdb_key_list`
 
 ## Mutation scoring
 
-We provide two scripts for scoring mutations for a given PDB. 
+We provide two scripts for scoring mutations for a given PDB.
 
 ### Score every possible single-mutant
 
@@ -70,4 +71,4 @@ To score specific mutations for a given PDB, use `fampnn/inference/score_multi.p
 
 To evaluate multiple simultaneous mutations (eg. double and triple mutations), simply concatenate the single-mutations with colons `:`. For example, simultaneous mutations of Asparagine (N) in the first and second positons of a PDB to Proline (P) and Arginine (R) respectively, would be `N0P:N1R	`
 
-An example of running a this script is provided in `examples/scripts/score_multi.sh`, and an example of an input csv for this script is provided in `fampnn/examples/scoring/mutations.csv`.
+An example for running this script is provided in `examples/scripts/score_multi.sh`, and an example of an input csv for this script is provided in `fampnn/examples/scoring/mutations.csv`.
