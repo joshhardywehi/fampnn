@@ -67,7 +67,7 @@ def main(cfg: DictConfig):
 
     # Split into batches
     num_batches = num_mutations // B  + (num_mutations % B > 0)
-    mutations_list = mutations_df['mutations']
+    mutations_list = mutations_df['mutations'].to_list()
     batched_mutations = np.array_split(mutations_list, num_batches)
 
     ### BEGIN EVAL ###
