@@ -249,7 +249,7 @@ def score_seq(model: SeqDenoiser,
         scores[wt_example_mask] = 0
 
     else:
-        raise ValueError(f'Incorrect scoring method given: {method}, choose between: single, multiple, psuedo_ppl')
+        raise ValueError(f'Incorrect scoring method given: {method}, choose between: single, multiple')
     return scores
 
 
