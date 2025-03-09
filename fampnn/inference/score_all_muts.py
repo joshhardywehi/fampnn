@@ -6,6 +6,13 @@ import pandas as pd
 import torch
 import yaml
 from omegaconf import DictConfig, OmegaConf
+# Added to fix safe loading of model weights
+from omegaconf.base import ContainerMetadata, Metadata
+from omegaconf.listconfig import ListConfig
+from omegaconf.nodes import AnyNode
+from collections import defaultdict
+from typing import Any
+
 from tqdm import tqdm
 
 from fampnn import scoring_utils
@@ -13,7 +20,6 @@ from fampnn.data import residue_constants as rc
 from fampnn.data.data import load_feats_from_pdb, process_single_pdb
 from fampnn.model.sd_model import SeqDenoiser
 from fampnn.sampling_utils import seed_everything
-
 
 @hydra.main(config_path="../../configs", config_name="score", version_base="1.3.2")
 def main(cfg: DictConfig):
@@ -30,12 +36,14 @@ def main(cfg: DictConfig):
 
     # Load in sequence denoiser (in eval mode)
     torch.set_grad_enabled(False)
-    ckpt = torch.load(cfg.checkpoint_path, map_location=device)
-    model = SeqDenoiser(ckpt["model_cfg"]).to(device).eval()
-    model.load_state_dict(ckpt["state_dict"])
+    # Added safe global command to fix loading of weights
+    with torch.serialization.safe_globals([int, list, DictConfig, ContainerMetadata, Any, dict, defaultdict, AnyNode, Metadata, ListConfig, Any]):
+    	ckpt = torch.load(cfg.checkpoint_path, map_location=device)
+    	model = SeqDenoiser(ckpt["model_cfg"]).to(device).eval()
+    	model.load_state_dict(ckpt["state_dict"])
 
-    # Make output directory and preserve config
-    Path(cfg.out_dir).mkdir(parents=True, exist_ok=True)
+    	# Make output directory and preserve config
+    	Path(cfg.out_dir).mkdir(parents=True, exist_ok=True)
     with open(Path(cfg.out_dir, "config.yaml"), "w") as f:
         yaml.safe_dump(cfg_dict, f)
 

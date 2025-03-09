@@ -6,6 +6,13 @@ import pandas as pd
 import torch
 import yaml
 from omegaconf import DictConfig, OmegaConf
+# Added to fix safe loading of model weights
+from omegaconf.base import ContainerMetadata, Metadata
+from omegaconf.listconfig import ListConfig
+from omegaconf.nodes import AnyNode
+from collections import defaultdict
+from typing import Any
+
 from tqdm import tqdm
 
 from fampnn import sampling_utils, scoring_utils
@@ -29,12 +36,14 @@ def main(cfg: DictConfig):
 
     # Load in sequence denoiser (in eval mode)
     torch.set_grad_enabled(False)
-    ckpt = torch.load(cfg.checkpoint_path, map_location=device)
-    model = SeqDenoiser(ckpt["model_cfg"]).to(device).eval()
-    model.load_state_dict(ckpt["state_dict"])
+    # Added to fix safe loading of model weights
+    with torch.serialization.safe_globals([int, list, DictConfig, ContainerMetadata, Any, dict, defaultdict, AnyNode, Metadata, ListConfig, Any]):
+    	ckpt = torch.load(cfg.checkpoint_path, map_location=device)
+    	model = SeqDenoiser(ckpt["model_cfg"]).to(device).eval()
+    	model.load_state_dict(ckpt["state_dict"])
 
-    # Make output directory and preserve config
-    Path(cfg.out_dir).mkdir(parents=True, exist_ok=True)
+    	# Make output directory and preserve config
+    	Path(cfg.out_dir).mkdir(parents=True, exist_ok=True)
     with open(Path(cfg.out_dir, "config.yaml"), "w") as f:
         yaml.safe_dump(cfg_dict, f)
 
