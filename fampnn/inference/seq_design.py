@@ -1,7 +1,7 @@
 import glob
 import pickle
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, Any
 
 import hydra
 import numpy as np
@@ -10,7 +10,12 @@ import torch
 import yaml
 from joblib import Parallel, delayed
 from natsort import natsorted
+# Added to fix safe loading of model weights
 from omegaconf import DictConfig, OmegaConf
+from omegaconf.base import ContainerMetadata, Metadata
+from omegaconf.listconfig import ListConfig
+from omegaconf.nodes import AnyNode
+from collections import defaultdict
 from tqdm import tqdm
 
 from fampnn import sampling_utils
@@ -19,7 +24,6 @@ from fampnn.data.data import (load_feats_from_pdb, pad_to_max_len,
                               process_single_pdb)
 from fampnn.model.sd_model import SeqDenoiser
 from fampnn.sampling_utils import seed_everything
-
 
 @hydra.main(config_path="../../configs", config_name="seq_design", version_base="1.3.2")
 def main(cfg: DictConfig):
@@ -37,19 +41,20 @@ def main(cfg: DictConfig):
 
     # Load in sequence denoiser (in eval mode)
     torch.set_grad_enabled(False)
-    ckpt = torch.load(cfg.checkpoint_path, map_location=device)
-    model = SeqDenoiser(ckpt["model_cfg"]).to(device).eval()
-    model.load_state_dict(ckpt["state_dict"])
+    # Added to fix safe loading of model weights
+    with torch.serialization.safe_globals([int, list, DictConfig, ContainerMetadata, Any, dict, defaultdict, AnyNode, Metadata, ListConfig]):
+    	ckpt = torch.load(cfg.checkpoint_path, map_location=device)
+    	model = SeqDenoiser(ckpt["model_cfg"]).to(device).eval()
+    	model.load_state_dict(ckpt["state_dict"])
+    	# Make output directories
+    	out_dir = cfg.out_dir  # base output directory
+    	sample_out_dir = f"{out_dir}/samples"  # directory for designed PDBs
+    	fasta_out_dir = f"{out_dir}/fastas"  # directory for sequences in FASTA format
+    	sample_pkl_dir = f"{out_dir}/sample_pkls"  # directory for pkls containing helpful info about each sample
 
-    # Make output directories
-    out_dir = cfg.out_dir  # base output directory
-    sample_out_dir = f"{out_dir}/samples"  # directory for designed PDBs
-    fasta_out_dir = f"{out_dir}/fastas"  # directory for sequences in FASTA format
-    sample_pkl_dir = f"{out_dir}/sample_pkls"  # directory for pkls containing helpful info about each sample
-
-    Path(sample_out_dir).mkdir(parents=True, exist_ok=True)
-    Path(fasta_out_dir).mkdir(parents=True, exist_ok=True)
-    Path(sample_pkl_dir).mkdir(parents=True, exist_ok=True)
+    	Path(sample_out_dir).mkdir(parents=True, exist_ok=True)
+    	Path(fasta_out_dir).mkdir(parents=True, exist_ok=True)
+    	Path(sample_pkl_dir).mkdir(parents=True, exist_ok=True)
 
     # Preserve config
     with open(Path(out_dir, "config.yaml"), "w") as f:
